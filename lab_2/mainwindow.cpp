@@ -73,30 +73,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_5_clicked()
 {
-//    QMessageBox msgBox;
-
-//    msgBox.setWindowTitle("Справка");
-//    msgBox.setText(" -- Цель работы: \n\nОсвоение методов численного решения краевых задач на примере первой краевой задачи для обыкновенного дифференциального уравнения (ОДУ) второго порядка с разрывными коэффициентами. Разработка, отладка и применение программных средств. Анализ сходимости и погрешности.\n\n --  Постановки задач: \n\nОсновная задача имеет вид:");
-//    msgBox.setText("<img src="/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg">");
-//    msgBox.exec();
-//    msgBox.setIconPixmap(QPixmap(":/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg"));
-//    msgBox.setIconPixmap(QPixmap(":/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/src/srcspravka.jpeg"));
-//    msgBox.setTextFormat(Qt::RichText);
-//    msgBox.setText("<img src=":/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/src/spravka.jpeg">");
-//    msgBox.exec();
-//    msgBox.show();
-
-//    msgBox.show();
    QWidget* Form = new QWidget;
    Form->setWindowTitle("Справка");
    Form->setAttribute(Qt::WA_DeleteOnClose, true);
-//   Form->setStyleSheet();
-//   Form->show();
-//    QLabel label;
-//    label.setPicture("/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg");
-//    QLabel::setPicture ("/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg");
-//    label.show();
-//   QWidget *logo = new QWidget(theMainWindow, NULL, Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WType_Modal);
+
    QPixmap pix("/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/src/new.jpeg");
    Form->resize(1020, 443);
    QPalette palette;
@@ -107,22 +87,24 @@ void MainWindow::on_pushButton_5_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    if(ui->tab)
+    if(ui->tab->isActiveWindow() && ui->tab_2->isHidden())
         CalculateTestProblem();
-    if(ui->tab_2)
+//    if(ui->tab_2->isHidden())
+    else
         CalculateMainProblem();
 }
 
 void MainWindow::CalculateMainProblem()
 {
     int n = ui->doubleSpinBox_3->value();
-    int min_step_main = ui->doubleSpinBox_10->value();
-    int max_step_main = ui->doubleSpinBox_9->value();
-    int step_main = ui->doubleSpinBox_5->value();
-    int mult_const_main = ui->doubleSpinBox_4->value();
-    int integral_points_main = ui->doubleSpinBox_11->value();
+    double min_step_main = ui->doubleSpinBox_10->value();
+    double max_step_main = ui->doubleSpinBox_9->value();
+    double step_main = ui->doubleSpinBox_5->value();
+    double mult_const_main = ui->doubleSpinBox_4->value();
+    double integral_points_main = ui->doubleSpinBox_11->value();
 
-    double h = 1.0 / n;
+    double h = step_main / n;
+    //    double h = 1.0 / n;
     double s = h / 2;
     double *x;
     double *x2;
@@ -421,11 +403,11 @@ void MainWindow::CalculateTestProblem()
     int n = ui->doubleSpinBox_3->value();
 
     // Получение параметров из GUI
-    int min_step_test = ui->doubleSpinBox_20->value();
-    int max_step_test = ui->doubleSpinBox_21->value();
-    int step_test = ui->doubleSpinBox_18->value();
-    int mult_const_test = ui->doubleSpinBox_19->value();
-    int integral_points_test = ui->doubleSpinBox_17->value();
+    double min_step_test = ui->doubleSpinBox_20->value();
+    double max_step_test = ui->doubleSpinBox_21->value();
+    double step_test = ui->doubleSpinBox_18->value();
+    double mult_const_test = ui->doubleSpinBox_19->value();
+    double integral_points_test = ui->doubleSpinBox_17->value();
 
 //    int min_step_main = ui->doubleSpinBox_10->value();
 //    int max_step_main = ui->doubleSpinBox_9->value();
@@ -434,7 +416,7 @@ void MainWindow::CalculateTestProblem()
 //    int integral_points_main = ui->doubleSpinBox_11->value();
     // Получение параметров из GUI
 
-    double h = (double)step_test / n;
+    double h = step_test / n;
 //    double h = 1.0 / n;
     double s = h / 2;
     double *x;

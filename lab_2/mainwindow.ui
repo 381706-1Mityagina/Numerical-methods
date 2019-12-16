@@ -3167,7 +3167,7 @@ gridline-color: rgb(151, 201, 201);</string>
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -3654,13 +3654,13 @@ gridline-color: rgb(151, 201, 201);</string>
        </palette>
       </property>
       <property name="decimals">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="minimum">
        <double>0.000000000000000</double>
       </property>
       <property name="maximum">
-       <double>20.000000000000000</double>
+       <double>2000.000000000000000</double>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="doubleSpinBox_19">
@@ -4884,13 +4884,16 @@ gridline-color: rgb(151, 201, 201);</string>
        </palette>
       </property>
       <property name="decimals">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="minimum">
        <double>0.000000000000000</double>
       </property>
       <property name="maximum">
-       <double>20.000000000000000</double>
+       <double>200.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>1.000000000000000</double>
       </property>
      </widget>
      <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
