@@ -81,6 +81,11 @@ void MainWindow::on_pushButton_2_clicked()
 void MainWindow::CalculateMainProblem()
 {
     int n = ui->doubleSpinBox_3->value();
+    int min_step_main = ui->doubleSpinBox_10->value();
+    int max_step_main = ui->doubleSpinBox_9->value();
+    int step_main = ui->doubleSpinBox_5->value();
+    int mult_const_main = ui->doubleSpinBox_4->value();
+    int integral_points_main = ui->doubleSpinBox_11->value();
 
     double h = 1.0 / n;
     double s = h / 2;
@@ -387,11 +392,11 @@ void MainWindow::CalculateTestProblem()
     int mult_const_test = ui->doubleSpinBox_19->value();
     int integral_points_test = ui->doubleSpinBox_17->value();
 
-    int min_step_main = ui->doubleSpinBox_10->value();
-    int max_step_main = ui->doubleSpinBox_9->value();
-    int step_main = ui->doubleSpinBox_5->value();
-    int mult_const_main = ui->doubleSpinBox_4->value();
-    int integral_points_main = ui->doubleSpinBox_11->value();
+//    int min_step_main = ui->doubleSpinBox_10->value();
+//    int max_step_main = ui->doubleSpinBox_9->value();
+//    int step_main = ui->doubleSpinBox_5->value();
+//    int mult_const_main = ui->doubleSpinBox_4->value();
+//    int integral_points_main = ui->doubleSpinBox_11->value();
     // Получение параметров из GUI
 
     double h = 1.0 / n;
