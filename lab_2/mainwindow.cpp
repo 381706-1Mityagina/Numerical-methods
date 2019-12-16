@@ -2,6 +2,15 @@
 #include "ui_mainwindow.h"
 #include "all_functions.h"
 #include <QMessageBox>
+//#include <QPixmap>
+
+class Widget : public QWidget {
+protected:
+  void paintEvent(QPaintEvent*) {
+    QPainter p(this);
+    p.drawPixmap(0, 0, QPixmap("/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg"));
+  }
+};
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -64,10 +73,36 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_5_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Справка");
-    msgBox.setText(" -- Цель работы: \n\nОсвоение методов численного решения краевых задач на примере первой краевой задачи для обыкновенного дифференциального уравнения (ОДУ) второго порядка с разрывными коэффициентами. Разработка, отладка и применение программных средств. Анализ сходимости и погрешности.\n\n --  Постановки задач: \n\nОсновная задача имеет вид:");
-    msgBox.exec();
+//    QMessageBox msgBox;
+
+//    msgBox.setWindowTitle("Справка");
+//    msgBox.setText(" -- Цель работы: \n\nОсвоение методов численного решения краевых задач на примере первой краевой задачи для обыкновенного дифференциального уравнения (ОДУ) второго порядка с разрывными коэффициентами. Разработка, отладка и применение программных средств. Анализ сходимости и погрешности.\n\n --  Постановки задач: \n\nОсновная задача имеет вид:");
+//    msgBox.setText("<img src="/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg">");
+//    msgBox.exec();
+//    msgBox.setIconPixmap(QPixmap(":/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg"));
+//    msgBox.setIconPixmap(QPixmap(":/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/src/srcspravka.jpeg"));
+//    msgBox.setTextFormat(Qt::RichText);
+//    msgBox.setText("<img src=":/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/src/spravka.jpeg">");
+//    msgBox.exec();
+//    msgBox.show();
+
+//    msgBox.show();
+   QWidget* Form = new QWidget;
+   Form->setWindowTitle("Справка");
+   Form->setAttribute(Qt::WA_DeleteOnClose, true);
+//   Form->setStyleSheet();
+//   Form->show();
+//    QLabel label;
+//    label.setPicture("/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg");
+//    QLabel::setPicture ("/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/srcspravka.jpeg");
+//    label.show();
+//   QWidget *logo = new QWidget(theMainWindow, NULL, Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WType_Modal);
+   QPixmap pix("/home/dariamityagina/ChM_lab_work_2/Numerical-methods/lab_2/src/new.jpeg");
+   Form->resize(1020, 443);
+   QPalette palette;
+   palette.setBrush(QPalette::Background, pix);
+   Form->setPalette(palette);
+   Form->show();
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -399,7 +434,8 @@ void MainWindow::CalculateTestProblem()
 //    int integral_points_main = ui->doubleSpinBox_11->value();
     // Получение параметров из GUI
 
-    double h = 1.0 / n;
+    double h = (double)step_test / n;
+//    double h = 1.0 / n;
     double s = h / 2;
     double *x;
     double *fi;
