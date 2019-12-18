@@ -136,19 +136,19 @@ void MainWindow::CalculateMainProblem()
 {
     double ksi = M_PI / 4;
     int n = ui->doubleSpinBox_3->value();
-    double step_main = ui->doubleSpinBox_5->value();
-    double h = step_main / (double)n;
-//    double h = 1.0 / (double)n;
+//    double step_main = ui->doubleSpinBox_5->value();
+//    double h = step_main / (double)n;
+    double h = 1.0 / (double)n;
     double* x = new double[n + 1];
-    double mu1 = 1.0, mu2 = .0;
-    x[0] = .0;
+    double mu1 = 1.0, mu2 =0.0;
+    x[0] = 0.0;
     x[n] = 1.0;
     for (int i = 1; i < n; i++) {
         x[i] = (double)i * h;
     }
     double* xs = new double[n];
     for (int i = 0; i < n; i++) {
-        xs[i] = ((double)i + .5) * h;
+        xs[i] = ((double)i + 0.5) * h;
     }
 
     double* a = new double[n];
@@ -194,7 +194,7 @@ void MainWindow::CalculateMainProblem()
     double* V = new double[n + 1];
     double* alpha = new double[n], *betta = new double[n];
     double A, B, C;
-    alpha[0] = .0;
+    alpha[0] = 0.0;
     betta[0] = mu1;
     for (int i = 1; i < n; i++) {
         A = a[i - 1] / (h * h);
@@ -227,15 +227,15 @@ void MainWindow::CalculateMainProblem()
     ui->widget_2->graph(0)->setData(fir, sec);
     ui->widget_2->xAxis->setLabel("y");
     ui->widget_2->yAxis->setLabel("x");
-    ui->widget_2->xAxis->setRange(0, 1.5);
-    ui->widget_2->yAxis->setRange(0, 1.5);
+    ui->widget_2->xAxis->setRange(0.01, 1.5);
+    ui->widget_2->yAxis->setRange(0.01, 1.5);
     ui->widget_2->replot();
 
     //шаг в 2 раза мельче
     int n2 = 2 * n;
     double h2 = 1 / (double)n2;
     double* x2 = new double[n2 + 1];
-    x2[0] = .0;
+    x2[0] =0.0;
     x2[n2] = 1.0;
     for (int i = 1; i < n2; i++) {
         x2[i] = (double)i * h2;
@@ -286,39 +286,48 @@ void MainWindow::CalculateMainProblem()
 
     //прямой ход прогонки
     double* V2 = new double[n2 + 1];
-    alpha = new double[n2];
-    betta = new double[n2];
-    alpha[0] = .0;
-    betta[0] = mu1;
+    alpha = new double[n2 + 1];
+    betta = new double[n2 + 1];
+    // alpha[0] =0.0;
+    // betta[0] = mu1;
+    alpha[1] =0.0;
+    betta[1] = mu1;
+
     for (int i = 1; i < n2; i++) {
-        A = a[i - 1] / (h2 * h2);
-        C = (a[i - 1] + a[i]) / (h2 * h2) + d[i - 1];
-        B = a[i] / (h2 * h2);
-        betta[i] = (fi[i - 1] + A * betta[i - 1]) / (C - alpha[i - 1] * A);
-        alpha[i] = B / (C - alpha[i - 1] * A);
+        // A = a[i - 1] / (h2 * h2);
+        // C = (a[i - 1] + a[i]) / (h2 * h2) + d[i - 1];
+        // B = a[i] / (h2 * h2);
+        // betta[i] = (fi[i - 1] + A * betta[i - 1]) / (C - alpha[i - 1] * A);
+        // alpha[i] = B / (C - alpha[i - 1] * A);
+        A = a[i] / (h * h);
+        B = a[i + 1] / (h * h);
+        C = (a[i] + a[i + 1]) / (h * h) + d[i];
+
+        alpha[i + 1] = B / (C - alpha[i] * A);
+        betta[i] = (fi[i] + A * betta[i]) / (C - alpha[i] * A);
     }
 
     //обратный ход
     V2[n2] = mu2;
     for (int i = n2 - 1; i >= 0; i--) {
-        V2[i] = alpha[i] * V2[i + 1] + betta[i];
+        V2[i] = alpha[i + 1] * V2[i + 1] + betta[i + 1];
     }
 
     //отрисовка числ решения с шагом в 2 раза мельче ~ red
-    for (int i = 0; i < n2 + 1; i++) {
-        fir.push_back(x[i]);
-        thir.push_back(V2[i]);
-    }
-    ui->widget_2->addGraph();
-    ui->widget_2->graph(1)->setPen(pen2);
-    ui->widget_2->graph(1)->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
-    ui->widget_2->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
-    ui->widget_2->graph(1)->setData(fir, thir);
-    ui->widget_2->xAxis->setLabel("y");
-    ui->widget_2->yAxis->setLabel("x");
-    ui->widget_2->xAxis->setRange(0, 1.5);
-    ui->widget_2->yAxis->setRange(0, 1.5);
-    ui->widget_2->replot();
+    // for (int i = 0; i < n2 + 1; i++) {
+    //     fir.push_back(x[i]);
+    //     thir.push_back(V2[i]);
+    // }
+    // ui->widget_2->addGraph();
+    // ui->widget_2->graph(1)->setPen(pen2);
+    // ui->widget_2->graph(1)->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
+    // ui->widget_2->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
+    // ui->widget_2->graph(1)->setData(fir, thir);
+    // ui->widget_2->xAxis->setLabel("y");
+    // ui->widget_2->yAxis->setLabel("x");
+    // ui->widget_2->xAxis->setRange(0.01, 1.5);
+    // ui->widget_2->yAxis->setRange(0.01, 1.5);
+    // ui->widget_2->replot();
 
     ui->widget_2->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
             QCP::iSelectLegend | QCP::iSelectPlottables);
@@ -347,7 +356,7 @@ void MainWindow::CalculateMainProblem()
     model1->setVerticalHeaderLabels(verticalHeader);
     //заполняем dataGrid
     double* VV = new double[n + 1];
-    double max = .0;
+    double max =0.0;
     int jj = 0;
     double x_needed;
     for (int i = 0; i < n + 1; i++) {
@@ -392,18 +401,18 @@ void MainWindow::CalculateTestProblem()
 {
     double ksi = M_PI / 4;
     int n = ui->doubleSpinBox_3->value();
-    double test_step = ui->doubleSpinBox_18->value();
-    double h = test_step / (double)n;
-//    double h = 1.0 / (double)n;
+
+    double h = 1.00 / (double)n;
     double* x = new double[n + 1];
-    double mu1 = 1.0, mu2 = .0;
+    double mu1 = 1.0, mu2 = 0.0;
+    // x[0] = 1;
     x[n] = 1.0;
     for (int i = 0; i < n; i++) {
         x[i] = (double)i * h;
     }
     double* xs = new double[n];
     for (int i = 0; i < n; i++) {
-        xs[i] = ((double)i + .5) * h;
+        xs[i] = ((double)i + 0.5) * h;
     }
     double* fi = new double[n - 1];
     for (int i = 0; i < n - 1; i++) {
@@ -435,10 +444,10 @@ void MainWindow::CalculateTestProblem()
             d[i] = (xs[i + 1] - xs[i]) / h;
         }
         else if (xs[i + 1] > ksi && xs[i] < ksi) {
-            d[i] = (M_PI  * M_PI  / 16.0 * (xs[i + 1] - ksi) + (ksi - xs[i])) / h;
+            d[i] = ((M_PI  * M_PI  / 16.0) * (xs[i + 1] - ksi) + (ksi - xs[i])) / h;
         }
         else if (xs[i + 1] > ksi && xs[i] > ksi) {
-            d[i] = (M_PI  * M_PI  / 16.0 * xs[i + 1] - M_PI  * M_PI  / 16.0 * xs[i]) / h;
+            d[i] = ((M_PI  * M_PI  / 16.0) * xs[i + 1] - (M_PI  * M_PI  / 16.0) * xs[i]) / h;
         }
     }
     double* V = new double[n + 1];
@@ -446,7 +455,7 @@ void MainWindow::CalculateTestProblem()
 
     //прямой ход прогонки
     double A, B, C;
-    alpha[0] = .0;
+    alpha[0] =0.0;
     betta[0] = mu1;
     for (int i = 1; i < n; i++) {
         A = a[i - 1] / (h * h);
@@ -496,24 +505,26 @@ void MainWindow::CalculateTestProblem()
     ui->widget->graph(0)->setData(fir, sec);
     ui->widget->xAxis->setLabel("y");
     ui->widget->yAxis->setLabel("x");
-    ui->widget->xAxis->setRange(0, 1.5);
-    ui->widget->yAxis->setRange(0, 1.5);
+    ui->widget->xAxis->setRange(0.01, 1.5);
+    ui->widget->yAxis->setRange(0.01, 1.5);
     ui->widget->replot();
 
     //счет точного решения
     double c1, c2, c3, c4, tmp_a, tmp_b;
-    double e4 = exp((M_PI / 4) / 4);
-    double e_4 = exp(-(M_PI / 4) / 4);
-    double e_8 = exp(-(M_PI / 4) * (M_PI / 4) / (8 * sqrt(2)));
-    double e8_2 = exp((M_PI / 4) * (M_PI / 4) / (8 * sqrt(2)) - (M_PI / 4) / sqrt(2));
-    double e8_22 = exp((M_PI / 4) * (M_PI / 4) / (8 * sqrt(2)) - (M_PI / 4) / (2 * sqrt(2)));
-    double pi_4 = (M_PI / 4) / (4 * sqrt(2));
-    double pi_8 = 8 * sqrt(2) / ((M_PI / 4) * (M_PI / 4));
+    double e4 = exp((M_PI / 4));
+    double e_4 = exp(-(M_PI / 4));
+//    double e4 = exp((M_PI / 4));
+//    double e_4 = exp(-(M_PI / 4));
+    double e_8 = exp(-(M_PI) * (M_PI) / (8 * sqrt(2)));
+    double e8_2 = exp((M_PI) * (M_PI) / (8 * sqrt(2)) - (M_PI) / sqrt(2));
+    double e8_22 = exp((M_PI) * (M_PI) / (8 * sqrt(2)) - (M_PI) / (2 * sqrt(2)));
+    double pi_4 = (M_PI) / (4 * sqrt(2));
+    double pi_8 = 8 * sqrt(2) / ((M_PI) * (M_PI));
     tmp_a = -e_8 + e8_2 - pi_4 * (e_8 + e8_2) / (e4 + e_4) * (-e_4 + e4);
-    tmp_b = pi_8 - 1 - pi_8 * e8_22 + 2 / (M_PI / 4) * e8_22 / (e4 + e_4) * (-e_4 + e4);
-    c1 = -2 / (M_PI / 4) * e8_22 / (e4 + e_4) - tmp_b / tmp_a * pi_4 * (e_8 + e8_2) / (e4 + e_4);
-    c2 = 2 / (M_PI / 4) * e8_22 / (e4 + e_4) + tmp_b / tmp_a * pi_4 * (e_8 + e8_2) / (e4 + e_4);
-    c3 = -pi_8 * exp(-(M_PI / 4) / (2 * sqrt(2))) - tmp_b / tmp_a * exp(-(M_PI / 4) / sqrt(2));
+    tmp_b = pi_8 - 1 - pi_8 * e8_22 + 2 / (M_PI) * e8_22 / (e4 + e_4) * (-e_4 + e4);
+    c1 = -2 / (M_PI) * e8_22 / (e4 + e_4) - tmp_b / tmp_a * pi_4 * (e_8 + e8_2) / (e4 + e_4);
+    c2 = 2 / (M_PI) * e8_22 / (e4 + e_4) + tmp_b / tmp_a * pi_4 * (e_8 + e8_2) / (e4 + e_4);
+    c3 = -pi_8 * exp(-(M_PI) / (2 * sqrt(2))) - tmp_b / tmp_a * exp(-(M_PI) / sqrt(2));
     c4 = tmp_b / tmp_a;
     double* u = new double[n + 1];
     for (int i = 0; i < n + 1; i++) {
@@ -521,7 +532,7 @@ void MainWindow::CalculateTestProblem()
             u[i] = c1 * exp(x[i]) + c2 * exp(-x[i]) + 1;
         }
         else if (x[i] > ksi) {
-            u[i] = c3 * exp((M_PI / 4) / sqrt(8) * x[i]) + c4 * exp(-(M_PI / 4) / sqrt(8) * x[i]) + pi_8;
+            u[i] = c3 * exp((M_PI) / sqrt(8) * x[i]) + c4 * exp(-(M_PI) / sqrt(8) * x[i]) + pi_8;
         }
     }
 
@@ -537,15 +548,15 @@ void MainWindow::CalculateTestProblem()
     ui->widget->graph(1)->setData(fir, thir);
     ui->widget->xAxis->setLabel("y");
     ui->widget->yAxis->setLabel("x");
-    ui->widget->xAxis->setRange(0, 1.5);
-    ui->widget->yAxis->setRange(0, 1.5);
+    ui->widget->xAxis->setRange(0.01, 1.5);
+    ui->widget->yAxis->setRange(0.01, 1.5);
     ui->widget->replot();
 
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
             QCP::iSelectLegend | QCP::iSelectPlottables);
     //заполняем dataGrid
     double* uV = new double[n + 1];
-    double max = .0;
+    double max =0.0;
     int jj = 0;
     double x_needed;
     for(int i = 0; i < n+1; i++) {
