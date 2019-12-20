@@ -70,22 +70,22 @@ int MainWindow::main(void)
 
     FillStartSolution(V, n, m, a, b, c, d);
 
-    {
-        if (show_status == 1 || show_status == 3)
-        {
-            for (int j = 0; j <= m; j++)
-            {
-                for (int i = 0; i <= n; i++)
-                {
-                    item2 = new QStandardItem(QString::number(V[i][j])); // ZeidelsMethod
-                    model2->setItem(i, j, item2);
-                }
-            }
-        }
-    }
-    ui->tableView->setModel(model2);
-    ui->tableView->resizeRowsToContents();
-    ui->tableView->resizeColumnsToContents();
+//    {
+//        if (show_status == 1 || show_status == 3)
+//        {
+//            for (int j = 0; j <= m; j++)
+//            {
+//                for (int i = 0; i <= n; i++)
+//                {
+//                    item2 = new QStandardItem(QString::number(V[i][j])); // ZeidelsMethod
+//                    model2->setItem(i, j, item2);
+//                }
+//            }
+//        }
+//    }
+//    ui->tableView->setModel(model2);
+//    ui->tableView->resizeRowsToContents();
+//    ui->tableView->resizeColumnsToContents();
 
     ZeidelsMethod(V, n, m, a, b, c, d, eps, Nmax, epsMax, S);
     finish = clock();
@@ -102,7 +102,7 @@ int MainWindow::main(void)
     model1->setVerticalHeaderLabels(verticalHeader);
 
     {
-        if (show_status == 2 || show_status == 3)
+        if (show_status == 2)
         {
             for (int j = 0; j <= m; j++)
             {
@@ -112,6 +112,7 @@ int MainWindow::main(void)
                     model1->setItem(i, j, item);
                 }
             }
+            show_status = 0;
         }
     }
     ui->tableView_2->setModel(model1);
@@ -157,10 +158,10 @@ MainWindow::MainWindow(QWidget *parent) :
         model1->setItem(i, j, item);
     }
 
-    ui->tableView->setModel(model2);
+//    ui->tableView->setModel(model2);
 
-    ui->tableView->resizeRowsToContents();
-    ui->tableView->resizeColumnsToContents();
+//    ui->tableView->resizeRowsToContents();
+//    ui->tableView->resizeColumnsToContents();
 
     ui->tableView_2->setModel(model1);
 
@@ -175,10 +176,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    if (show_status == 2)
-        show_status = 3; // test
-    else show_status = 1;
-    main();
+//    if (show_status == 2)
+//        show_status = 3; // test
+//    else show_status = 1;
+//    main();
 }
 
 void MainWindow::on_pushButton_2_clicked()
